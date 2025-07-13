@@ -1,0 +1,48 @@
+@startuml
+
+title C4 container
+
+top to bottom direction
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+SHOW_PERSON_OUTLINE()
+
+AddBoundaryTag("Platform", $borderColor="#cccccc", $fontColor="#cccccc", $borderStyle="dashed")
+Boundary(platformgroup, "Platform", $tags="Platform") {
+  System(Nessie, "Nessie")
+  System(ApacheIceberg, "Apache Iceberg")
+  System(Airflow, "Airflow")
+  System(MinIO, "MinIO")
+  System(Datahub, "Datahub")
+  System(DWH, "DWH")
+  System(PowerBI, "Power BI")
+  System(PowerBuilder, "Power Builder")
+  System(InternalServices, "Внутренние сервисы")
+  System(FinTechServices, "Финтех сервисы")
+  System(AIServices, "ИИ сервисы")
+  System(Dremio, "Dremio")
+}
+
+Person(Analyst, "Аналитик")
+Person(User, "Пользователь")
+
+Rel(Analyst, Dremio, "Аналитические запросы")
+Rel(User, Datahub, "Работа с API")
+Rel(InternalServices, Airflow, "")
+Rel(FinTechServices, Airflow, "")
+Rel(AIServices, Airflow, "")
+Rel(DWH, Airflow, "Исторические данные")
+Rel(Dremio, Nessie, "Определение с какой веткой данных работать")
+Rel(Dremio, ApacheIceberg, "Исполняет SQL-запросы")
+Rel(Dremio, MinIO, "Чтение из Parquet")
+Rel(Nessie, ApacheIceberg, "Управляет ветками, snapshot-версиями таблиц")
+Rel(PowerBuilder, DWH, "Отчёты в старой версии UI")
+Rel(PowerBI, DWH, "Отчёты на основе старого источника")
+Rel(PowerBI, Dremio, "Отчеты в витрине")
+Rel(Airflow, MinIO, "")
+Rel(Airflow, ApacheIceberg, "Создаёт таблицы через Spark/Trino")
+Rel(Datahub, Dremio, "Получение схем и датасетов")
+Rel(ApacheIceberg, MinIO, "Сохраняет файлы Parquet")
+
+@enduml
