@@ -1,0 +1,20 @@
+@startuml
+
+left to right direction
+
+rectangle "Airflow" as Airflow #orange
+rectangle "Apache Iceberg" as ApacheIceberg #lightgreen
+rectangle "MinIO" as MinIO #lightblue
+rectangle "Clinics" as Clinics #violet
+rectangle "AIServices" as AIServices #violet
+rectangle "FinTechServices" as FinTechServices #violet
+rectangle "DWH" as DWH #violet
+
+Clinics --> Airflow
+AIServices --> Airflow
+FinTechServices --> Airflow
+DWH --> Airflow
+Airflow --> ApacheIceberg
+Airflow --> MinIO
+
+@enduml
